@@ -1,11 +1,11 @@
-import click
+from .engine import MMDEngine
 
+from pathlib import Path
+import click
 
 
 def resolve_uri(uri):
 
-    from pathlib import Path
-    from .engine import MMDEngine
 
     queue = []
 
@@ -21,9 +21,14 @@ def resolve_uri(uri):
 
 
 @click.command()
-@click.argument("uri")
-def main(uri: str):
-    resolve_uri(uri)
+@click.option("--list-providers", is_flag=True)
+@click.argument("uri", required=False)
+def main(uri: str, **kwargs):
+
+    if kwargs.pop("list_providers"):
+        print(MMDEngine([]).load_providers())
+
+    if uri: resolve_uri(uri)
 
 if __name__ == "__main__":
     main()

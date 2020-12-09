@@ -7,7 +7,8 @@ from manmandon.util import parse_url_fname
 class ManhuaguiChapters(MMDChapterListProvider):
 
     patterns = [
-        r"^https://(www\.)?manhuagui\.com/comic/\d+/?$"
+        r"^https://(www\.)?manhuagui\.com/comic/\d+/?$",
+        r"^https://tw\.manhuagui\.com/comic/\d+/?$"
     ]
 
     def resolve(self, uri):
@@ -19,7 +20,8 @@ class ManhuaguiChapters(MMDChapterListProvider):
 class ManhuaguiChapter(MMDChapterProvider):
 
     patterns = [
-        r"^https://(www\.)?manhuagui\.com/comic/\d+/\d+\.html$"
+        r"^https://(www\.)?manhuagui\.com/comic/\d+/\d+\.html$",
+        r"^https://tw\.manhuagui\.com/comic/\d+/\d+\.html$"
     ]
 
     scope = []
@@ -38,7 +40,7 @@ class ManhuaguiChapter(MMDChapterProvider):
         ]
 
         self.driver.get(uri)
-        self.sleep(3)
+        self.sleep(10)
         num_pages = self.execute(Path(__file__).parent / "num_pages.js")
 
         directory = self.output_directory / self.driver.title
@@ -52,7 +54,7 @@ class ManhuaguiChapter(MMDChapterProvider):
                 img_url = self.execute(Path(__file__).parent / "image_url.js")
                 img_urls.append(img_url)
                 self.driver.wait_for_request("hamreus.com")
-                self.sleep(3)
+                self.sleep(10)
                 bar.update(1)
                 self.flip()
 
