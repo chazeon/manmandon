@@ -1,0 +1,16 @@
+providers = [
+    "copymanga",
+    "dmzj",
+    "manhuagui",
+    "wenku8",
+]
+
+[webdriver]
+path='support/drivers/chromedriver'
+
+[directories]
+providers = "providers"
+output = "output"
+
+[timeout]
+flip = 5
