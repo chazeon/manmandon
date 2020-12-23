@@ -14,10 +14,10 @@ from .provider import MMDProvider, MMDChapterProvider, MMDChapterListProvider, M
 class MMDEngine:
 
 
-    def __init__(self):
+    def __init__(self, config_filename: str = None):
         self.driver: webdriver.Chrome = None
         self.queue: list = []
-        self.config: dict = self.load_config() 
+        self.config: dict = self.load_config(config_filename) 
     
     def __del__(self):
         self.unload_driver()
