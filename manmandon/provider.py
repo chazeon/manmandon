@@ -56,7 +56,7 @@ class MMDChapterProvider(MMDProvider):
     provider_type = MMDProviderType.CHAPTER_PROVIDER
 
     @property
-    @lru_cache
+    @lru_cache()
     def output_directory(self) -> Path:
         directory = Path(self.config["output"]["directory"])
         if not directory.exists():

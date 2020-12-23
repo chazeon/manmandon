@@ -1,6 +1,7 @@
 
 [timeout]
 flip = 5
+wait_for_request = 60
 
 [webdriver]
 path = "PATH_TO_CHROME_DRIVER_BINARY"

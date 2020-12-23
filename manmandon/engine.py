@@ -80,5 +80,3 @@ class MMDEngine:
             if i == len(self.queue):
                 break
         
-        print(self.queue)
-        

@@ -1,5 +1,11 @@
 [webdriver]
-path="chromedriver"
+path="./chromedriver"
 
 [provider]
 path="providers"
+providers = [
+    "copymanga",
+    "dmzj",
+    "manhuagui",
+    "wenku8",
+]
