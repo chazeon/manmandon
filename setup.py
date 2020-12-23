@@ -7,11 +7,15 @@ setup(
     install_requires=[
         "selenium",
         "selenium-wire",
-	    "click"
+	    "click",
+        "toml"
     ],
     entry_points={
         "console_scripts": [
             "mmdon = manmandon.main:main"
         ]
+    },
+    package_data={
+        "": "default.toml"
     }
 )

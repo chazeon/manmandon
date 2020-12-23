@@ -1,7 +1,7 @@
-from .engine import MMDEngine
-
-from pathlib import Path
 import click
+from pathlib import Path
+
+from .engine import MMDEngine
 
 
 def resolve_uri(uri):
@@ -17,7 +17,7 @@ def resolve_uri(uri):
     else:
         queue.append(uri)
     
-    MMDEngine(queue).process()
+    MMDEngine().process(queue)
 
 
 @click.command()
@@ -26,7 +26,7 @@ def resolve_uri(uri):
 def main(uri: str, **kwargs):
 
     if kwargs.pop("list_providers"):
-        print(MMDEngine([]).load_providers())
+        print(MMDEngine().load_providers())
 
     if uri: resolve_uri(uri)
 

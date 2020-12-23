@@ -1,37 +1,48 @@
-from seleniumwire import webdriver
-import json
+import re
+import toml
+import pkg_resources
+
 from urllib.parse import urlparse, unquote
 from pathlib import Path
-import re
-from .provider import MMDProvider, MMDChapterProvider, MMDChapterListProvider, MMDProviderType
-from typing import List
+from typing import List, Optional
 
-import toml
+from seleniumwire import webdriver
+
+from .provider import MMDProvider, MMDChapterProvider, MMDChapterListProvider, MMDProviderType
+
 
 class MMDEngine:
-    def __init__(self, queue):
-        self.config = self.load_config() 
-        self.driver = self.load_driver(self.config)
-        self.queue = queue
+
+
+    def __init__(self):
+        self.driver: webdriver.Chrome = None
+        self.queue: list = []
+        self.config: dict = self.load_config() 
     
     def __del__(self):
-        self.unload_driver(self.driver)
+        self.unload_driver()
     
     @staticmethod
-    def load_config(fname: str = None):
-        config = toml.load("default.toml")
+    def load_config(fname: str = None) -> dict:
+
+        default_fname = pkg_resources.resource_filename(__name__, "../default.toml")
+        config = toml.load(default_fname)
+
         if fname:
             config.update(toml.load(fname))
+
         return config
     
-    @staticmethod
-    def load_driver(config):
-        webdriver_path = config["webdriver"]["path"]
-        return webdriver.Chrome(executable_path=webdriver_path)
+    def load_driver(self):
+        if self.driver is None:
+            config = self.config
+            webdriver_path = config["webdriver"]["path"]
+            self.driver = webdriver.Chrome(executable_path=webdriver_path)
     
-    @staticmethod
-    def unload_driver(driver):
-        return driver.quit()
+    def unload_driver(self):
+        if self.driver != None:
+            self.driver.quit()
+            self.driver = None
     
     def load_providers(self) -> List[MMDProvider]:
         import importlib, sys
@@ -55,7 +66,12 @@ class MMDEngine:
                     provider.resolve(uri)
 
 
-    def process(self):
+    def process(self, queue: list = None):
+
+        if queue:
+            self.queue.extend(queue)
+
+        self.load_driver()
 
         i = 0
         while True:
