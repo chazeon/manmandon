@@ -48,9 +48,9 @@ class MMDEngine:
         import importlib, sys
 
         config = self.config
-        sys.path.append(config["directories"]["providers"])
+        sys.path.append(config["provider"]["path"])
         providers = []
-        for name in config["providers"]:
+        for name in config["provider"]["providers"]:
             for Provider in importlib.import_module(name).providers:
                 provider = Provider(self.config, self.driver)
                 providers.append(provider)

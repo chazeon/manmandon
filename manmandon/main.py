@@ -23,8 +23,9 @@ def resolve_uri(engine, uri):
 
 
 def print_providers(providers: List[MMDProvider]):
-
-    # Title
+    '''
+    Print provider class names and their matching patterns
+    '''
     click.echo(click.style("Providers", bold=True))
     click.echo(click.style("=========", bold=True))
 

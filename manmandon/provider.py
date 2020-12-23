@@ -1,11 +1,12 @@
+import re
+import time
 from enum import Enum, auto
 from typing import List
-import re
 from string import Template
-from selenium.webdriver import Chrome
 from pathlib import Path
 from urllib.parse import urlparse, unquote
-import time
+from functools import lru_cache
+from selenium.webdriver import Chrome
 
 class MMDProviderType(Enum):
     CHAPTER_PROVIDER = auto()
@@ -55,5 +56,9 @@ class MMDChapterProvider(MMDProvider):
     provider_type = MMDProviderType.CHAPTER_PROVIDER
 
     @property
+    @lru_cache
     def output_directory(self) -> Path:
-        return Path(self.config["directories"]["output"])
+        directory = Path(self.config["output"]["directory"])
+        if not directory.exists():
+            directory.mkdir()
+        return directory

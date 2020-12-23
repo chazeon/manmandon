@@ -1,3 +1,12 @@
+
+[timeout]
+flip = 5
+
+[webdriver]
+path = "PATH_TO_CHROME_DRIVER_BINARY"
+
+[provider]
+path = "PATH_TO_PROVIDER_DIRECTORY"
 providers = [
     "copymanga",
     "dmzj",
@@ -5,12 +14,5 @@ providers = [
     "wenku8",
 ]
 
-[webdriver]
-path='support/drivers/chromedriver'
-
-[directories]
-providers = "providers"
-output = "output"
-
-[timeout]
-flip = 5
+[output]
+directory = "output"
