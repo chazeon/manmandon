@@ -1,0 +1,5 @@
+[webdriver]
+path="chromedriver"
+
+[provider]
+path="providers"
