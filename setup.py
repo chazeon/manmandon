@@ -8,7 +8,7 @@ setup(
         "selenium",
         "selenium-wire",
 	    "click",
-        "toml"
+        "toml",
     ],
     entry_points={
         "console_scripts": [
@@ -16,6 +16,6 @@ setup(
         ]
     },
     package_data={
-        "": "default.toml"
+        "": ["default.toml"],
     }
 )
