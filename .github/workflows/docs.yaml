@@ -1,0 +1,41 @@
+name: Deploy pdoc docs
+
+on:
+  push:
+    branches: [ "v2" ]
+  pull_request:
+    branches: [ "v2" ]
+
+  workflow_dispatch: {}
+
+jobs:
+  
+  build:
+  
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: pip install -U .[dev]
+
+      - name: Generate docs
+        run: pdoc -t ./doc -o ./_site ./manmandon
+
+      - name: Upload a Build Artifact
+        uses: actions/upload-pages-artifact@v1.0.4
+        with:
+          name: github-pages
+          path: _site
+
+      - name: Deploy GitHub Pages site
+        uses: actions/deploy-pages@v1.2.2
+        id: deployment
+        
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.page_url }}
+
+    permissions:
+      pages: write
+      id-token: write

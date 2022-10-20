@@ -15,6 +15,7 @@ setup(
     ],
     extras_require={
         'dev': [
+            'pdoc',
             'mypy',
             'types-toml',
             'tqdm-stubs',
