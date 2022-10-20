@@ -1,0 +1,11 @@
+.pdoc span {
+    font-family: monospace;
+}
+
+.pdoc h1, .pdoc h2, .pdoc h3 {
+    font-weight: 600;
+}
+
+code, kbd, pre, samp {
+    font-family: monospace;
+}
