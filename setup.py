@@ -21,7 +21,8 @@ setup(
             'pdoc',
             'mypy',
             'types-toml',
-            'tqdm-stubs',
+            'types-tqdm',
+            'types-tabulate'
             # 'pytest',
             # 'pytest-cov',
         ]
