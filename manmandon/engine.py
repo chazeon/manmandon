@@ -75,10 +75,11 @@ class MMDEngine(ContextManager):
         :param path: Path to the Python script.
         '''
         from importlib.util import spec_from_file_location, module_from_spec
-        spec = spec_from_file_location("plugin", path)
+        name = Path(path).stem
+        spec = spec_from_file_location(name, path)
         module = module_from_spec(spec)
         spec.loader.exec_module(module)
-        logger.debug("Plugin from %s loaded as %s" % (path, pformat(module)))
+        logger.debug("Plugin from %s loaded as %s." % (path, pformat(module)))
         return module
 
     def match_plugin(self, url: str) -> Optional['MMDPluginBase']:
