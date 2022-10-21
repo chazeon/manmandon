@@ -12,6 +12,9 @@ setup(
         "urlmatch",
         "tqdm",
         "requests",
+        "coloredlogs",
+        "tabulate",
+        "wcwidth", # https://stackoverflow.com/a/66648740/1487532
     ],
     extras_require={
         'dev': [

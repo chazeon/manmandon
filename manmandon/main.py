@@ -1,7 +1,7 @@
 from pathlib import Path
 from pprint import pformat
 import click
-import logging
+import coloredlogs
 from logging import getLogger
 
 logger = getLogger(__file__)
@@ -13,7 +13,7 @@ logger = getLogger(__file__)
 @click.option("-v", "--verbosity", default="INFO")
 def main(url: str, config: str, verbosity: str):
 
-    logging.basicConfig(level=verbosity)
+    coloredlogs.install(level=verbosity)
 
     from .engine import MMDEngine
     from collections import deque
@@ -25,11 +25,11 @@ def main(url: str, config: str, verbosity: str):
         while queue:
             name, link = queue.popleft()
             plugin = e.match_plugin(link)
-            logging.debug("Processing %s at %s." % (str(name), link))
+            logger.debug("Processing %s at %s." % (str(name), link))
             if not plugin:
                 logger.error("Url %s cannot be resolved." % link)
                 raise RuntimeError("Url %s cannot be resolved." % link)
-            logging.debug("Matched plugin %s for %s." %
+            logger.debug("Matched plugin %s for %s." %
                           (pformat(plugin), link))
 
             chapters = plugin.get_chapters(link)

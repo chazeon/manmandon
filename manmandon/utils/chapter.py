@@ -3,6 +3,9 @@ from click import prompt
 from logging import getLogger
 from pprint import pformat
 
+from click import prompt, echo
+from tabulate import tabulate
+
 logger = getLogger(__file__)
 
 T = TypeVar('T')
@@ -27,8 +30,9 @@ def range_expand(txt: str) -> List[int]:
 
 
 def display_chapters(chapters: Iterable[Tuple[str, str]]) -> None:
-    for i, (title, url) in enumerate(chapters):
-        print(f"{i+1:>4d} {title:<10} {url}")
+    '''Tabulate chapter name and URL.
+    '''
+    echo(tabulate(chapters, showindex=True, headers=["#", "Name", "URL"]))
 
 
 def select_chapters(chapters: Iterable[T]) -> List[T]:
