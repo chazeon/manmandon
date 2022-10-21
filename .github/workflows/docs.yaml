@@ -20,7 +20,7 @@ jobs:
         run: pip install -U .[dev]
 
       - name: Generate docs
-        run: pdoc -t ./doc -o ./_site ./manmandon
+        run: pdoc -t ./docs -o ./_site ./manmandon
 
       - name: Upload a Build Artifact
         uses: actions/upload-pages-artifact@v1.0.4
