@@ -1,0 +1,5 @@
+[provider]
+providers = []
+
+[output]
+directory = "output"

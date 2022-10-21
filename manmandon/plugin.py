@@ -6,10 +6,9 @@ if TYPE_CHECKING:
 
 
 class MMDPluginBase(ABC):
-    # '''
-    # Attributes:
-    #     patterns: in google format. see... <>
-    # '''
+    '''An abstract base class for implement.
+    All plugins are discovered as subclasses of this class.
+    '''
 
     patterns: List[str] = []
 
@@ -25,6 +24,10 @@ class MMDPluginBase(ABC):
 
     @classmethod
     def match(cls, url: str):
+        '''Match the `url` with the match `patterns` of this class.
+
+        :param url: The url of the page to be matched.
+        '''
         for pattern in cls.patterns:
             if re.search(pattern, url): return True
         return False

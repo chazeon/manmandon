@@ -29,6 +29,7 @@ setup(
         ]
     },
     package_data={
-        "": ["default.toml"],
-    }
+        "manmandon": ["default.toml"],
+    },
+    license="MIT"
 )

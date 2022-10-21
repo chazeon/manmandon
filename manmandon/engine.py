@@ -12,7 +12,7 @@ logger = getLogger(__file__)
 
 class MMDEngine(ContextManager):
 
-    def __init__(self, config) -> None:
+    def __init__(self, config: str) -> None:
 
         from .plugin import MMDPluginBase
 
@@ -23,7 +23,8 @@ class MMDEngine(ContextManager):
             self.load_plugin_file(plugin_file)
         self.plugins = MMDPluginBase.__subclasses__()
 
-        logger.debug("Loaded plugins: %s." % pformat(MMDPluginBase.__subclasses__(), compact=True))
+        logger.debug("Loaded plugins: %s." % pformat(
+            MMDPluginBase.__subclasses__(), compact=True))
 
         self.playwright = sync_playwright()
 
@@ -32,7 +33,7 @@ class MMDEngine(ContextManager):
         self.browser = self.p.chromium.launch(
             **self.config["engine"]["browser"]
         )
-        # if (not self.config["engine"]["browser"]["headless"] 
+        # if (not self.config["engine"]["browser"]["headless"]
         #     not self.config["engine"]["browser"].get("user_dir", None)):
         #     self.browser.wait_for_event("backgroundpage")
         return self
@@ -43,6 +44,11 @@ class MMDEngine(ContextManager):
 
     @staticmethod
     def load_config(custom_file: str) -> dict:
+        '''Load the custom config TOML and deepmerge with the default one.
+
+        :param custom_file: path to the custom TOML file.
+        :return: Merged configuration object as a ``dict``.
+        '''
         import toml
         from importlib import resources
         from deepmerge import always_merger
@@ -54,7 +60,11 @@ class MMDEngine(ContextManager):
         return config
 
     @staticmethod
-    def load_plugin_file(path):
+    def load_plugin_file(path: str):
+        '''Load and execute a Python script that contains the code for a plugin.
+        
+        :param path: Path to the Python script.
+        '''
         from importlib.util import spec_from_file_location, module_from_spec
         spec = spec_from_file_location("plugin", path)
         module = module_from_spec(spec)
