@@ -1,8 +1,10 @@
-from playwright.sync_api import sync_playwright, Playwright, BrowserContext
+from playwright.sync_api import sync_playwright, Playwright, BrowserContext, Browser
 from typing import ContextManager
 from logging import getLogger
 from pprint import pformat
-from typing import Optional, TYPE_CHECKING
+from typing import Optional, Union, TYPE_CHECKING
+from pathlib import Path
+import requests # ! Have to or it breaks plugin detection
 if TYPE_CHECKING:
     from .plugin import MMDPluginBase
 
@@ -15,7 +17,7 @@ class MMDEngine(ContextManager):
     p: Playwright
     'The playwright context.'
 
-    browser: BrowserContext
+    browser: Union[BrowserContext, Browser]
     'The running browser.'
 
 
@@ -38,13 +40,21 @@ class MMDEngine(ContextManager):
         self.playwright = sync_playwright()
 
     def __enter__(self) -> 'MMDEngine':
+
         self.p = self.playwright.__enter__()
-        self.browser = self.p.chromium.launch(
-            **self.config["engine"]["browser"]
-        )
-        # if (not self.config["engine"]["browser"]["headless"]
-        #     not self.config["engine"]["browser"].get("user_dir", None)):
-        #     self.browser.wait_for_event("backgroundpage")
+
+        if self.config["engine"]["browser"].get("user_data_dir", None):
+            self.browser = self.p.chromium.launch_persistent_context(
+                **self.config["engine"]["browser"],
+            )
+            if not self.config["engine"]["browser"]["headless"]:
+                self.browser.wait_for_event("backgroundpage")
+
+        else:
+            self.browser = self.p.chromium.launch(
+                **self.config["engine"]["browser"]
+            )
+
         return self
 
     def __exit__(self, exc_type, exc, exc_tb):
