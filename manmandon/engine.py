@@ -1,4 +1,4 @@
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import sync_playwright, Playwright, BrowserContext
 from typing import ContextManager
 from logging import getLogger
 from pprint import pformat
@@ -12,7 +12,17 @@ logger = getLogger(__file__)
 
 class MMDEngine(ContextManager):
 
+    p: Playwright
+    'The playwright context.'
+
+    browser: BrowserContext
+    'The running browser.'
+
+
     def __init__(self, config: str) -> None:
+        '''
+        :param config: Path of the configuration file.
+        '''
 
         from .plugin import MMDPluginBase
 
@@ -23,8 +33,7 @@ class MMDEngine(ContextManager):
             self.load_plugin_file(plugin_file)
         self.plugins = MMDPluginBase.__subclasses__()
 
-        logger.debug("Loaded plugins: %s." % pformat(
-            MMDPluginBase.__subclasses__(), compact=True))
+        logger.debug("Loaded plugins: %s." % pformat(self.plugins, compact=True))
 
         self.playwright = sync_playwright()
 
@@ -73,6 +82,11 @@ class MMDEngine(ContextManager):
         return module
 
     def match_plugin(self, url: str) -> Optional['MMDPluginBase']:
+        '''Find a matching plugin that handles the URL.
+
+        :param url: URL of the page.
+        :return: A matching plugin or ``None`` if there is no match.
+        '''
         for PluginClass in self.plugins:
             if PluginClass.match(url):
                 return PluginClass(self)

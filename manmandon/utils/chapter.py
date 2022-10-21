@@ -1,5 +1,4 @@
 from typing import Tuple, List, TypeVar, Iterable
-from click import prompt
 from logging import getLogger
 from pprint import pformat
 
@@ -12,7 +11,7 @@ T = TypeVar('T')
 
 
 def range_expand(txt: str) -> List[int]:
-    '''Range expansion
+    '''Range expansion.
 
     >>> range_expand('1-3,6,8,10-12')
     [1, 2, 3, 6, 8, 10, 11, 12]
@@ -36,6 +35,12 @@ def display_chapters(chapters: Iterable[Tuple[str, str]]) -> None:
 
 
 def select_chapters(chapters: Iterable[T]) -> List[T]:
+    '''Prompt user to select chapter, then filter out the selected entries.
+
+    :param chapters: List of item to be filtered by user entered indices.
+
+    :return: Filtered entries.
+    '''
     selection = prompt("Please enter the chapter you want")
     selection = range_expand(selection)
     logger.debug("Your selected chapters are %s" % pformat(selection))
