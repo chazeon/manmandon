@@ -46,6 +46,6 @@ def select_chapters(chapters: Iterable[T]) -> List[T]:
     logger.debug("Your selected chapters are %s" % pformat(selection))
     selected = []
     for i, chapter in enumerate(chapters):
-        if i+1 in selection:
+        if i in selection:
             selected.append(chapter)
     return selected

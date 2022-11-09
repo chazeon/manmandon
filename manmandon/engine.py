@@ -4,7 +4,6 @@ from logging import getLogger
 from pprint import pformat
 from typing import Optional, Union, TYPE_CHECKING
 from pathlib import Path
-import requests # ! Have to or it breaks plugin detection
 if TYPE_CHECKING:
     from .plugin import MMDPluginBase
 
@@ -20,7 +19,6 @@ class MMDEngine(ContextManager):
     browser: Union[BrowserContext, Browser]
     'The running browser.'
 
-
     def __init__(self, config: str) -> None:
         '''
         :param config: Path of the configuration file.
@@ -35,7 +33,8 @@ class MMDEngine(ContextManager):
             self.load_plugin_file(plugin_file)
         self.plugins = MMDPluginBase.__subclasses__()
 
-        logger.debug("Loaded plugins: %s." % pformat(self.plugins, compact=True))
+        logger.debug("Loaded plugins: %s." %
+                     pformat(self.plugins, compact=True))
 
         self.playwright = sync_playwright()
 
@@ -81,7 +80,7 @@ class MMDEngine(ContextManager):
     @staticmethod
     def load_plugin_file(path: str):
         '''Load and execute a Python script that contains the code for a plugin.
-        
+
         :param path: Path to the Python script.
         '''
         from importlib.util import spec_from_file_location, module_from_spec

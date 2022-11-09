@@ -3,6 +3,7 @@ from pprint import pformat
 import click
 import coloredlogs
 from logging import getLogger
+import requests  # ! Have to or it breaks plugin detection
 
 logger = getLogger(__file__)
 
@@ -30,7 +31,7 @@ def main(url: str, config: str, verbosity: str):
                 logger.error("Url %s cannot be resolved." % link)
                 raise RuntimeError("Url %s cannot be resolved." % link)
             logger.debug("Matched plugin %s for %s." %
-                          (pformat(plugin), link))
+                         (pformat(plugin), link))
 
             chapters = plugin.get_chapters(link)
             if chapters:
